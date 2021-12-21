@@ -1,3 +1,4 @@
+import crypto from "crypto";
 import { Request, Response, NextFunction } from "express";
 import { body, validationResult } from "express-validator";
 import { Router } from "express";
@@ -6,7 +7,7 @@ import { IUser, User } from "../model/User";
 const router = Router();
 
 router.post(
-  "/signup",
+  "/signin",
   body("username")
     .notEmpty()
     .withMessage({ statusCode: 400, message: "Invalid username/password" }),
@@ -19,13 +20,26 @@ router.post(
     try {
       if (!errors.isEmpty()) throw new Error(JSON.stringify(errors.array()));
 
-      if (await User.findOne({ username }))
+      let user = await User.findOne({ username });
+      if (!user)
         throw new Error(
-          JSON.stringify({ statusCode: 400, message: "User already exist" })
+          JSON.stringify({
+            statusCode: 401,
+            message: "Invalid username/password",
+          })
         );
 
-      const user: IUser = await User.create({ username, password });
-      await user.save();
+      const salt = crypto.randomBytes(16).toString("hex");
+      const hash = crypto
+        .pbkdf2Sync(password, salt, 1000, 64, `sha512`)
+        .toString(`hex`);
+      if (hash !== user.password)
+        throw new Error(
+          JSON.stringify({
+            statusCode: 401,
+            message: "Invalid username/password",
+          })
+        );
 
       res.send(username);
     } catch (err) {
@@ -34,4 +48,4 @@ router.post(
   }
 );
 
-export { router as signupRoute };
+export { router as signinRoute };
