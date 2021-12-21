@@ -15,9 +15,7 @@ router.post(
     .withMessage({ statusCode: 400, message: "Invalid username/password" }),
   async (req: Request, res: Response, next: NextFunction) => {
     const errors = validationResult(req);
-    const username = req.body.username;
-    const password = req.body.password;
-
+    const { username, password } = req.body;
     try {
       if (!errors.isEmpty()) throw new Error(JSON.stringify(errors.array()));
 
