@@ -41,6 +41,7 @@ router.post(
           })
         );
 
+      req.session.user = username;
       res.send(username);
     } catch (err) {
       next(err);

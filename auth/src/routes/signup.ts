@@ -27,7 +27,8 @@ router.post(
       const user: IUser = await User.create({ username, password });
       await user.save();
 
-      res.send(username);
+      req.session.user = username;
+      res.status(201).send(username);
     } catch (err) {
       next(err);
     }
