@@ -23,7 +23,7 @@ app.use(signinRoute);
 app.use(signupRoute);
 app.use(logoutRoute);
 
-mongoose.connect(`mongodb://${process.env.MONGODB}:3000/auth`);
+mongoose.connect(process.env.MONGODB!);
 
 app.listen(3000, () => {
   console.log("Auth server is online");
