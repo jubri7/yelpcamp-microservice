@@ -5,6 +5,7 @@ import { signinRoute } from "./routes/signin";
 import { signupRoute } from "./routes/signup";
 import { sessionUser } from "./middleware/session";
 import redisClient from "./redis";
+import { logoutRoute } from "./routes/logout";
 
 const app = express();
 const RedisStore = require("connect-redis")(session);
@@ -20,6 +21,7 @@ app.use(sessionUser);
 
 app.use(signinRoute);
 app.use(signupRoute);
+app.use(logoutRoute);
 
 mongoose.connect(`mongodb://${process.env.MONGODB}:3000/auth`);
 
