@@ -17,7 +17,7 @@ router.post(
     const errors = validationResult(req);
     const { username, password } = req.body;
     try {
-      if (!errors.isEmpty()) throw new Error(JSON.stringify(errors.array()));
+      if (errors.isEmpty()) throw new Error(JSON.stringify(errors.array()));
 
       if (await User.findOne({ username }))
         throw new Error(

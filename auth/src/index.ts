@@ -9,11 +9,14 @@ import { logoutRoute } from "./routes/logout";
 
 const app = express();
 const RedisStore = require("connect-redis")(session);
+mongoose.connect(process.env.MONGODB!);
 
 app.use(
   session({
     store: new RedisStore({ client: redisClient }),
     secret: process.env.SESSION!,
+    saveUninitialized: false,
+    resave: false,
   })
 );
 
@@ -22,8 +25,6 @@ app.use(sessionUser);
 app.use(signinRoute);
 app.use(signupRoute);
 app.use(logoutRoute);
-
-mongoose.connect(process.env.MONGODB!);
 
 app.listen(3000, () => {
   console.log("Auth server is online");
