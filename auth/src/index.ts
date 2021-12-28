@@ -22,6 +22,11 @@ app.use(
 
 app.use(sessionUser);
 
+app.get("/api/users", (req, res) => {
+  console.log("made it!");
+  res.send("test");
+});
+
 app.use(signinRoute);
 app.use(signupRoute);
 app.use(logoutRoute);
