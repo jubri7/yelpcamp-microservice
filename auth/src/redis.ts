@@ -1,7 +1,5 @@
 import { createClient } from "redis";
 
-console.log(process.env.REDIS);
-
 const redisClient = createClient({
   socket: { host: process.env.REDIS! },
   legacyMode: true,

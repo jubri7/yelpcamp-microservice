@@ -22,6 +22,8 @@ UserSchema.pre("save", function save(next) {
     .toString(`hex`);
 
   user.set("password", hashedPassword);
+
+  next();
 });
 
 export const User = model<IUser>("User", UserSchema);
