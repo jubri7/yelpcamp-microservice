@@ -5,7 +5,7 @@ import { signinRoute } from "./routes/signin";
 import { signupRoute } from "./routes/signup";
 import { sessionUser } from "./middleware/session";
 import redisClient from "./redis";
-import { logoutRoute } from "./routes/logout";
+import { signoutRoute } from "./routes/signout";
 
 const app = express();
 const RedisStore = require("connect-redis")(session);
@@ -32,7 +32,7 @@ app.get("/api/users", (req, res) => {
 
 app.use(signinRoute);
 app.use(signupRoute);
-app.use(logoutRoute);
+app.use(signoutRoute);
 
 app.listen(3000, () => {
   console.log("Auth server is online");

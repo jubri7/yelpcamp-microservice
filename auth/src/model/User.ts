@@ -4,11 +4,13 @@ import crypto from "crypto";
 export interface IUser extends Document {
   username: string;
   password: string;
+  email: string;
 }
 
 const UserSchema = new Schema<IUser>({
   username: { type: String, required: true },
   password: { type: String, required: true },
+  email: { type: String, required: true },
 });
 
 UserSchema.pre("save", function save(next) {

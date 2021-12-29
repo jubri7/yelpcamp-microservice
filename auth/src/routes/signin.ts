@@ -7,25 +7,26 @@ import { User } from "../model/User";
 const router = Router();
 
 router.post(
-  "/signin",
-  body("username")
+  "/api/users/signin",
+  body("email")
+    .isEmail()
     .notEmpty()
-    .withMessage({ statusCode: 400, message: "Invalid username/password" }),
+    .withMessage({ statusCode: 400, message: "Invalid email/password" }),
   body("password")
     .notEmpty()
-    .withMessage({ statusCode: 400, message: "Invalid username/password" }),
+    .withMessage({ statusCode: 400, message: "Invalid email/password" }),
   async (req: Request, res: Response, next: NextFunction) => {
     const errors = validationResult(req);
-    const { username, password } = req.body;
+    const { email, password } = req.body;
     try {
       if (!errors.isEmpty()) throw new Error(JSON.stringify(errors.array()));
 
-      let user = await User.findOne({ username });
+      let user = await User.findOne({ email });
       if (!user)
         throw new Error(
           JSON.stringify({
             statusCode: 401,
-            message: "Invalid username/password",
+            message: "Invalid email/password",
           })
         );
 
@@ -37,12 +38,12 @@ router.post(
         throw new Error(
           JSON.stringify({
             statusCode: 401,
-            message: "Invalid username/password",
+            message: "Invalid email/password",
           })
         );
 
-      req.session.user = username;
-      res.send(username);
+      req.session.user = email;
+      res.send(email);
     } catch (err) {
       next(err);
     }

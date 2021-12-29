@@ -11,4 +11,4 @@ router.get(
   }
 );
 
-export { router as logoutRoute };
+export { router as signoutRoute };
