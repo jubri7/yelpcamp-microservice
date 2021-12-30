@@ -1,13 +1,17 @@
-import { Schema, model, Document } from "mongoose";
+import { Schema, model, Document, Model } from "mongoose";
 import crypto from "crypto";
 
 export interface IUser extends Document {
-  username: string;
+  username?: string;
   password: string;
   email: string;
 }
 
-const UserSchema = new Schema<IUser>({
+interface UserModel extends Model<IUser> {
+  build(email: string, password: string, username?: string): any;
+}
+
+const UserSchema = new Schema({
   username: { type: String, required: true },
   password: { type: String, required: true },
   email: { type: String, required: true },
@@ -28,4 +32,17 @@ UserSchema.pre("save", function save(next) {
   next();
 });
 
-export const User = model<IUser>("User", UserSchema);
+UserSchema.statics.build = async function (
+  email: string,
+  password: string,
+  username?: string
+) {
+  const user = await User.create({
+    email,
+    password,
+    username: username || null,
+  });
+  return user;
+};
+
+export const User = model<IUser, UserModel>("User", UserSchema);
