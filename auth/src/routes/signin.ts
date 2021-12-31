@@ -19,15 +19,27 @@ router.post(
     const errors = validationResult(req);
     const { email, password } = req.body;
     try {
-      if (!errors.isEmpty()) throw new Error(JSON.stringify(errors.array()));
+      if (!errors.isEmpty())
+        throw new Error(
+          JSON.stringify(
+            errors.array().map((err) => {
+              {
+                statusCode: err.msg.statusCode;
+                message: err.msg.message;
+              }
+            })
+          )
+        );
 
       let user = await User.findOne({ email });
       if (!user)
         throw new Error(
-          JSON.stringify({
-            statusCode: 401,
-            message: "Invalid email/password",
-          })
+          JSON.stringify([
+            {
+              statusCode: 401,
+              message: "Invalid email/password",
+            },
+          ])
         );
 
       const salt = crypto.randomBytes(16).toString("hex");
@@ -36,10 +48,12 @@ router.post(
         .toString(`hex`);
       if (hash !== user.password)
         throw new Error(
-          JSON.stringify({
-            statusCode: 401,
-            message: "Invalid email/password",
-          })
+          JSON.stringify([
+            {
+              statusCode: 401,
+              message: "Invalid email/password",
+            },
+          ])
         );
 
       req.session.user = email;

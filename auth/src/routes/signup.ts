@@ -27,10 +27,10 @@ router.post(
         throw new Error(
           JSON.stringify(
             errors.array().map((err) => {
-              {
-                statusCode: err.msg.statusCode;
-                message: err.msg.message;
-              }
+              return {
+                statusCode: err.msg.statusCode,
+                message: err.msg.message,
+              };
             })
           )
         );

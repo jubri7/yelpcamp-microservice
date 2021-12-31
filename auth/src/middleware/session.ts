@@ -1,8 +1,17 @@
 import { Request, Response, NextFunction } from "express";
+import session from "express-session";
 
 declare module "express-session" {
   interface SessionData {
-    user: string | null;
+    user: string;
+  }
+}
+
+declare global {
+  namespace session {
+    interface SessionData {
+      user: string;
+    }
   }
 }
 
@@ -11,10 +20,11 @@ export const sessionUser = (
   res: Response,
   next: NextFunction
 ) => {
-  if ("user" in req.session) {
+  console.log("here");
+  if (req.session.user) {
     next();
   } else {
-    req.session.user = null;
+    req.session.user = "";
     next();
   }
 };

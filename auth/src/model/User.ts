@@ -8,7 +8,15 @@ export interface IUser extends Document {
 }
 
 interface UserModel extends Model<IUser> {
-  build(email: string, password: string, username?: string): any;
+  build(
+    email: string,
+    password: string,
+    username?: string
+  ): Promise<
+    IUser & {
+      _id: any;
+    }
+  >;
 }
 
 const UserSchema = new Schema({
