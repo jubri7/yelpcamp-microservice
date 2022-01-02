@@ -6,7 +6,6 @@ export const errorHandler = (
   res: Response,
   next: NextFunction
 ) => {
-  console.log(err);
   const error: [{ statusCode: number; message: string }] = JSON.parse(
     err.message
   );

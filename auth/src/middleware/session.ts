@@ -7,20 +7,11 @@ declare module "express-session" {
   }
 }
 
-declare global {
-  namespace session {
-    interface SessionData {
-      user: string;
-    }
-  }
-}
-
 export const sessionUser = (
   req: Request,
   res: Response,
   next: NextFunction
 ) => {
-  console.log("here");
   if (req.session.user) {
     next();
   } else {

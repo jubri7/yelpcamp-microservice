@@ -11,13 +11,22 @@ router.post(
     body("email")
       .isEmail()
       .notEmpty()
-      .withMessage({ statusCode: 400, message: "Invalid email/password" }),
+      .withMessage({
+        statusCode: 400,
+        message: "Invalid email/username and or password",
+      }),
     body("username")
       .notEmpty()
-      .withMessage({ statusCode: 400, message: "Invalid email/password" }),
+      .withMessage({
+        statusCode: 400,
+        message: "Invalid email/username and or password",
+      }),
     body("password")
       .notEmpty()
-      .withMessage({ statusCode: 400, message: "Invalid email/password" }),
+      .withMessage({
+        statusCode: 400,
+        message: "Invalid email/username and or password",
+      }),
   ],
   async (req: Request, res: Response, next: NextFunction) => {
     const errors = validationResult(req);
