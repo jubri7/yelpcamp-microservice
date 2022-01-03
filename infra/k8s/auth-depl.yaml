@@ -22,6 +22,16 @@ spec:
               secretKeyRef:
                 name: session-secret
                 key: SESSION
+          - name: GOOGLE_CLIENT_ID
+            valueFrom:
+              secretKeyRef:
+                name: google
+                key: GOOGLE_CLIENT_ID
+          - name: GOOGLE_CLIENT_SECRET
+            valueFrom:
+              secretKeyRef:
+                name: google
+                key: GOOGLE_CLIENT_SECRET
           - name: REDIS
             value: auth-redis-service
 ---
