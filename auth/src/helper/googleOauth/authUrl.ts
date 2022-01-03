@@ -3,10 +3,10 @@ import { google } from "googleapis";
 const oauth2Client = new google.auth.OAuth2(
   process.env.GOOGLE_CLIENT_ID,
   process.env.GOOGLE_CLIENT_SECRET,
-  "https:///auth/google"
+  "https:///sales.dev/api/users/"
 );
 
-function getGoogleAuthURL() {
+export const getGoogleAuthURL = () => {
   const scopes = [
     "https://www.googleapis.com/auth/userinfo.profile",
     "https://www.googleapis.com/auth/userinfo.email",
@@ -17,4 +17,4 @@ function getGoogleAuthURL() {
     prompt: "consent",
     scope: scopes,
   });
-}
+};

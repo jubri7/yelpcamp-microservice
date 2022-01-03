@@ -8,13 +8,15 @@ const router = Router();
 
 router.post(
   "/api/users/signin",
-  body("email")
-    .isEmail()
-    .notEmpty()
-    .withMessage({ statusCode: 400, message: "Invalid email/password" }),
-  body("password")
-    .notEmpty()
-    .withMessage({ statusCode: 400, message: "Invalid email/password" }),
+  [
+    body("email")
+      .isEmail()
+      .notEmpty()
+      .withMessage({ statusCode: 400, message: "Invalid email/password" }),
+    body("password")
+      .notEmpty()
+      .withMessage({ statusCode: 400, message: "Invalid email/password" }),
+  ],
   async (req: Request, res: Response, next: NextFunction) => {
     const errors = validationResult(req);
     const { email, password } = req.body;

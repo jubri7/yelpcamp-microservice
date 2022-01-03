@@ -7,7 +7,7 @@ const oauth2Client = new google.auth.OAuth2(
   "https:///auth/google"
 );
 
-async function getGoogleUser(code: string) {
+export const getGoogleUser = async (code: string) => {
   const { tokens } = await oauth2Client.getToken(code);
 
   const googleUser = await axios
@@ -25,4 +25,4 @@ async function getGoogleUser(code: string) {
     });
 
   return googleUser;
-}
+};
