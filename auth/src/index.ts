@@ -7,6 +7,7 @@ import { sessionUser } from "./middleware/session";
 import redisClient from "./redis";
 import { signoutRoute } from "./routes/signout";
 import { errorHandler } from "./middleware/errorHandler";
+import { googleSigninRoute } from "./routes/googleSignin";
 
 const app = express();
 const RedisStore = require("connect-redis")(session);
@@ -34,6 +35,7 @@ app.get("/api/users", (req, res) => {
 app.use(signinRoute);
 app.use(signupRoute);
 app.use(signoutRoute);
+app.use(googleSigninRoute);
 
 app.use(errorHandler);
 

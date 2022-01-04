@@ -4,7 +4,7 @@ import { Router } from "express";
 const router = Router();
 
 router.get(
-  "/logout",
+  "/api/users/signout",
   async (req: Request, res: Response, next: NextFunction) => {
     req.session.user = "";
     res.send("Logout successful");
