@@ -1,5 +1,6 @@
 import { google } from "googleapis";
 import axios from "axios";
+import { generateError } from "../generateError";
 
 const oauth2Client = new google.auth.OAuth2(
   process.env.GOOGLE_CLIENT_ID,
@@ -21,7 +22,7 @@ export const getGoogleUser = async (code: string) => {
     )
     .then((res) => res.data)
     .catch((error) => {
-      throw new Error(error.message);
+      throw new Error(JSON.stringify([generateError(500, error.message)]));
     });
 
   return googleUser;

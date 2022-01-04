@@ -3,6 +3,7 @@ import { body, validationResult } from "express-validator";
 import { Router } from "express";
 import { User } from "../model/User";
 import { getGoogleUser } from "../helper/googleOauth/googleUser";
+import { generateError } from "../helper/generateError";
 
 const router = Router();
 
@@ -10,7 +11,7 @@ router.post(
   "/api/users/google",
   body("code")
     .notEmpty()
-    .withMessage({ statusCode: 400, message: "Something went wrong" }),
+    .withMessage(generateError(400, "Something went wrong")),
   async (req: Request, res: Response, next: NextFunction) => {
     const code = req.body.code;
     const googleUser = await getGoogleUser(code);

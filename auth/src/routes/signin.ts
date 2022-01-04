@@ -3,6 +3,7 @@ import { Request, Response, NextFunction } from "express";
 import { body, validationResult } from "express-validator";
 import { Router } from "express";
 import { User } from "../model/User";
+import { generateError } from "../helper/generateError";
 
 const router = Router();
 
@@ -12,10 +13,10 @@ router.post(
     body("email")
       .isEmail()
       .notEmpty()
-      .withMessage({ statusCode: 400, message: "Invalid email/password" }),
+      .withMessage(generateError(400, "Invalid email/password")),
     body("password")
       .notEmpty()
-      .withMessage({ statusCode: 400, message: "Invalid email/password" }),
+      .withMessage(generateError(400, "Invalid email/password")),
   ],
   async (req: Request, res: Response, next: NextFunction) => {
     const errors = validationResult(req);
@@ -24,24 +25,16 @@ router.post(
       if (!errors.isEmpty())
         throw new Error(
           JSON.stringify(
-            errors.array().map((err) => {
-              {
-                statusCode: err.msg.statusCode;
-                message: err.msg.message;
-              }
-            })
+            errors
+              .array()
+              .map((err) => generateError(err.msg.statusCode, err.msg.message))
           )
         );
 
       let user = await User.findOne({ email });
       if (!user)
         throw new Error(
-          JSON.stringify([
-            {
-              statusCode: 401,
-              message: "Invalid email/password",
-            },
-          ])
+          JSON.stringify([generateError(401, "Invalid email/password")])
         );
 
       const salt = crypto.randomBytes(16).toString("hex");
@@ -50,12 +43,7 @@ router.post(
         .toString(`hex`);
       if (hash !== user.password)
         throw new Error(
-          JSON.stringify([
-            {
-              statusCode: 401,
-              message: "Invalid email/password",
-            },
-          ])
+          JSON.stringify([generateError(401, "Invalid email/password")])
         );
 
       req.session.user = email;
